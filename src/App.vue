@@ -1,36 +1,61 @@
 <template>
-  <div id="app">
-    <h1>{{titulo}}</h1>
-    <ul>
-      <li  v-for="foto of fotos" v-bind:key="foto">
-        <img :key="foto.titulo" :src="foto.url" :alt="foto.titulo">
+  <div class="corpo">
+    <h1 class="titulo">{{ titulo }}</h1>
+
+    <ul class="lista-fotos">
+      <li class="lista-fotos-item" v-for="foto of fotos" v-bind:key="foto">
+        <meu-painel :titulo="foto.titulo">
+            <img class="imagem-responsiva" :src="foto.url" :alt="foto.titulo">
+        </meu-painel>
       </li>
     </ul>
-    
-    
-    
+
   </div>
 </template>
 
 <script>
+import Painel from './components/shared/painel/Painel.vue';
 export default {
+  components:{
+    'meu-painel': Painel
+  },
  data(){
    return{
-     titulo: 'Sistema Carregamento de Imagem',
-     fotos: [
-       {
-        url: 'https://s2.glbimg.com/eQkhAB2FrlFSMj_Jbkw024ueqao=/e.glbimg.com/og/ed/f/original/2019/01/19/50898568_10157219683273254_5268539131058716672_o.jpg',
-        titulo: 'Cachorro'
-        },{
-          url: 'https://s2.glbimg.com/eQkhAB2FrlFSMj_Jbkw024ueqao=/e.glbimg.com/og/ed/f/original/2019/01/19/50898568_10157219683273254_5268539131058716672_o.jpg',
-          titulo: 'Cachorrao'
-        }
-     ]
+     titulo: 'Sistema Carregamento de Imagem Vue JS',
+     fotos: []
    }
+ },
+
+ created(){
+   this.$http.get('http://localhost:3000/v1/fotos')
+    .then(res => res.json())
+    .then(fotos => this.fotos = fotos,err => console.log(err));
  }
 }
 </script>
 
 <style>
+.titulo {
+    text-align: center;
+  }
 
+  .corpo {
+    font-family: Helvetica, sans-serif;
+    margin: 0 auto;
+    width: 96%;
+  }
+
+  .lista-fotos {
+    list-style: none;
+  }
+
+  .lista-fotos .lista-fotos-item {
+    display: inline-block;
+  }
+
+  .imagem-responsiva {
+    width: 100%;
+  }
+
+  
 </style>
