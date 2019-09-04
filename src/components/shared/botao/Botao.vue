@@ -1,5 +1,5 @@
 <template>
-    <button @click="disparaAcao()" class="botao botao-perigo" :type="tipo">{{rotulo}}</button>
+    <button @click="disparaAcao()" :class="estiloDoBotao" :type="tipo">{{rotulo}}</button>
 </template>
 <script>
 export default {
