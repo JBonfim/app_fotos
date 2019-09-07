@@ -1,7 +1,7 @@
 <template>
   <div >
     <h1 class="titulo">{{ titulo }}</h1>
-
+    <p v-show="mensagem" class="centralizado">{{ mensagem }}</p>
     <input type="seach" class="filtro" @input="filtro = $event.target.value" placehold="filtre por parte do titulo" >
 
     <ul class="lista-fotos">
@@ -35,14 +35,24 @@ export default {
   methods: {
 
     remove(foto) {
-       alert(foto.titulo);
+       this.$http.delete(`http://localhost:3000/v1/fotos/${foto._id}`)
+            .then(() => {
+               let indice = this.fotos.indexOf(foto);
+               this.fotos.splice(indice, 1);
+               this.mensagem = 'Foto removida com sucesso!';
+               },
+            erro => {
+              console.log(erro);
+              this.mensagem = "Não foi possivel remover a foto.";
+            } )
     }
   },
  data(){
    return{
      titulo: 'Sistema Carregamento de Imagem Vue JS',
      fotos: [],
-     filtro: ''
+     filtro: '',
+     mensagem: ''
    }
  },
 
@@ -69,6 +79,10 @@ export default {
 
 <style>
 .titulo {
+    text-align: center;
+  }
+
+  .centralizado {
     text-align: center;
   }
 
