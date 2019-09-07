@@ -7,7 +7,14 @@ export default class FotoService {
 
     cadastra(foto) {
 
-        return this._resource.save(foto);
+        if(foto._id) {
+
+            return this._resource.update({ id: foto._id }, foto);
+
+        } else {
+
+            return this._resource.save(foto);
+        }
     }
 
     lista() {
@@ -20,5 +27,10 @@ export default class FotoService {
     apaga(id) {
 
         return this._resource.delete({ id });
+    }
+
+    busca(id){
+        return this._resource.get({id})
+        .then(res => res.json());
     }
 }
